@@ -1,0 +1,30 @@
+[project]
+name = "api-drift-sentinel"
+version = "0.2.0"
+description = "Typed Python CLI for monitoring OpenAPI and docs drift across fast-moving SaaS platforms."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "beautifulsoup4>=4.12.3,<5",
+  "httpx>=0.28.1,<0.29",
+  "pydantic>=2.10.6,<3",
+  "pyyaml>=6.0.2,<7",
+  "rich>=13.9.4,<14",
+  "typer>=0.15.2,<0.16",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.5,<9",
+]
+
+[project.scripts]
+drift-sentinel = "api_drift_sentinel.cli:app"
+
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

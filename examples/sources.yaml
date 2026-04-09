@@ -1,0 +1,90 @@
+db_path: .drift-sentinel/drift.db
+scheduler:
+  enabled: false
+  interval_seconds: 3600
+  poll_seconds: 5
+dashboard:
+  host: 127.0.0.1
+  port: 8080
+alerts:
+  - name: local-alert-log
+    kind: file
+    target: .drift-sentinel/alerts.jsonl
+    min_severity: warning
+    format: json
+actions:
+  - name: local-action-log
+    kind: file
+    target: .drift-sentinel/actions.md
+    min_severity: info
+    format: markdown
+sources:
+  - name: github-graphql-breaking-changes
+    kind: html
+    url: https://docs.github.com/v4/breaking_changes
+    description: Scheduled GitHub GraphQL removals and dangerous changes.
+    selector: main
+    vendor: github
+    schedule_interval_seconds: 3600
+    impact:
+      services: [graphql-gateway]
+      repos: [acme/integrations-graphql]
+      owners: [platform-oncall, integrations-team]
+      runbooks: [https://runbooks.example.com/github-breaking-change]
+      customer_workflows: [customer sync, support tooling]
+    action_target_names: [local-action-log]
+  - name: monday-version-migration
+    kind: html
+    url: https://developer.monday.com/api-reference/docs/migrating-to-version-2025-04
+    description: monday.com migration guide with breaking and non-breaking changes.
+    selector: main
+    vendor: monday
+    schedule_interval_seconds: 3600
+    impact:
+      services: [monday-sync]
+      repos: [acme/monday-sync]
+      owners: [integrations-team]
+      runbooks: [https://runbooks.example.com/monday-version-migration]
+      customer_workflows: [board sync]
+    action_target_names: [local-action-log]
+  - name: monday-api-versioning
+    kind: html
+    url: https://developer.monday.com/api-reference/docs/api-versioning
+    description: Current, maintenance, and release-candidate API lifecycle.
+    selector: main
+    vendor: monday
+    schedule_interval_seconds: 3600
+    impact:
+      services: [monday-sync]
+      repos: [acme/monday-sync]
+      owners: [integrations-team]
+      runbooks: [https://runbooks.example.com/monday-version-migration]
+      customer_workflows: [board sync]
+    action_target_names: [local-action-log]
+  - name: github-rest-openapi
+    kind: openapi
+    url: https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json
+    description: Public GitHub REST API description snapshot.
+    vendor: github
+    schedule_interval_seconds: 3600
+    impact:
+      services: [repo-sync-worker]
+      repos: [acme/repo-sync]
+      owners: [platform-oncall]
+      runbooks: [https://runbooks.example.com/github-rest-api]
+      customer_workflows: [repository onboarding]
+    proof_checks:
+      - name: list-repos-sample
+        kind: sample_schema
+        operation: GET /user/repos
+        status_code: "200"
+        content_type: application/json
+        sample_payload:
+          - id: 1
+            name: example
+    suppression_rules:
+      - name: ignore-next-link-noise
+        finding_codes: [response-header-added]
+        schema_paths: [response header 200 Link]
+        reason: pagination headers are expected churn
+    action_target_names: [local-action-log]

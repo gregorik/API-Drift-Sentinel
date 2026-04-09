@@ -5,7 +5,8 @@
 [![SQLite Timeline](https://img.shields.io/badge/storage-SQLite-3b3f58.svg)](#compliance-and-audit-timeline)
 [![Status](https://img.shields.io/badge/focus-upstream%20API%20risk-bf1238.svg)](#why-this-project-exists)
 
-*Catch upstream API changes before they break production.* API Drift Sentinel is a tool that monitors external APIs you depend on, not APIs you own: aimed at teams consuming third-party APIs; SaaS integration teams, agencies, internal platform teams, and AI/agent builders that need early warning before an upstream contract shift breaks production. Featuring integration risk monitoring AKA upstream API change monitoring. It watches OpenAPI descriptions and developer docs, detects compatibility drift, extracts deadlines, maps changes to owners and internal services, runs proof checks, and creates routed follow-up actions such as Slack alerts, GitHub issues, Jira tickets, and audit timeline entries.
+*Catch upstream API changes before they break production.* API Drift Sentinel is a tool that monitors external APIs you depend on, not APIs you own: aimed at teams consuming third-party APIs; SaaS integration teams, agencies, internal platform teams, and AI/agent builders that need early warning before an upstream contract shift breaks production. <br>
+Featuring integration risk monitoring AKA upstream API change monitoring, API Drift Sentinel watches OpenAPI descriptions and developer docs, detects compatibility drift, extracts deadlines, maps changes to owners and internal services, runs proof checks, and creates routed follow-up actions such as Slack alerts, GitHub issues, Jira tickets, and audit timeline entries.
 
 ## Why This Project Exists
 
